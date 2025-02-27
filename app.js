@@ -1,12 +1,34 @@
-import express from 'express';
-// const express = require('express');
-const app = express();
-const port = 3000;
+//imports
+const express = require('express');
+const socket = require('socket.io');
+const http = require('http');
+const path = require('path');
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+//port
+const port = 3000;
+//deaults
+const app = express();
+const server = http.createServer(app);
+const io = socket(server);
+
+app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
+
+io.on('connection', (socket) => {
+  socket.on('send-location', (data) => {
+    io.emit('receive-location', { id: socket.id, ...data });
+  });
+  socket.on('disconnect', (id) => {
+    io.emit('user-disconnected', socket.id);
+  });
 });
 
-app.listen(port, () => {
+//server
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+server.listen(port, () => {
   console.log(`App listenting on port: ${port}`);
+  console.log(`${__dirname}`);
 });
