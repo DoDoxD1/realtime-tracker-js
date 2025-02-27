@@ -30,5 +30,4 @@ app.get('/', (req, res) => {
 
 server.listen(port, () => {
   console.log(`App listenting on port: ${port}`);
-  console.log(`${__dirname}`);
 });
