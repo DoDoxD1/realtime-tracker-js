@@ -17,7 +17,7 @@ if (navigator.geolocation) {
   );
 }
 
-const map = L.map('map').setView([0, 0], 10);
+const map = L.map('map').setView([0, 0], 14);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Arihant Jain',
@@ -27,7 +27,7 @@ const markers = {};
 
 socket.on('receive-location', (data) => {
   const { id, latitude, longitude } = data;
-  map.setView([latitude, longitude], 15);
+  map.setView([latitude, longitude]);
   if (markers[id]) {
     markers[id].setLatLng([latitude, longitude]);
   } else {
